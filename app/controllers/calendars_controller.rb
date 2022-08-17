@@ -2,13 +2,16 @@ class CalendarsController < ApplicationController
 
   # １週間のカレンダーと予定が表示されるページ
   def index
-    getWeek
+    get_week
+    # コントロール内でインスタンスメソッドの定義文を使いたい場合は上記のように裸で入力して良い
     @plan = Plan.new
   end
 
   # 予定の保存
   def create
     Plan.create(plan_params)
+                # (plan:params[:plan])という書き方はありか？
+                # プライベートメソッドでrequireとpermitを引張ってくるための引数だからダメ
     redirect_to action: :index
   end
 
@@ -16,9 +19,11 @@ class CalendarsController < ApplicationController
 
   def plan_params
     params.require(:calendars).permit(:date, :plan)
+    # パラメータからどの情報を受け取るか(モデル名)=require、
+    # 取得したいキーを指定、キーと値のセットのみを取得permit
   end
 
-  def getWeek
+  def get_week
     wdays = ['(日)','(月)','(火)','(水)','(木)','(金)','(土)']
 
     # Dateオブジェクトは、日付を保持しています。下記のように`.today.day`とすると、今日の日付を取得できます。
@@ -34,7 +39,7 @@ class CalendarsController < ApplicationController
       plans.each do |plan|
         today_plans.push(plan.plan) if plan.date == @todays_date + x
       end
-      days = { :month => (@todays_date + x).month, :date => (@todays_date+x).day, :plans => today_plans}
+      days = { month: (@todays_date + x).month, date: (@todays_date+x).day, plans: today_plans}
       @week_days.push(days)
     end
 
