@@ -2,7 +2,7 @@ class CalendarsController < ApplicationController
 
   # １週間のカレンダーと予定が表示されるページ
   def index
-    get_Week
+    get_week
     # コントロール内でインスタンスメソッドの定義文を使いたい場合は上記のように裸で入力して良い
     @plan = Plan.new
   end
@@ -23,7 +23,7 @@ class CalendarsController < ApplicationController
     # 取得したいキーを指定、キーと値のセットのみを取得permit
   end
 
-  def get_Week
+  def get_week
     wdays = ['(日)','(月)','(火)','(水)','(木)','(金)','(土)']
 
     # Dateオブジェクトは、日付を保持しています。下記のように`.today.day`とすると、今日の日付を取得できます。
